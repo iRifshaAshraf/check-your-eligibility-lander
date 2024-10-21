@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod
+              ? n.callMethod.apply(n, arguments)
+              : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = "2.0";
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(
+          window,
+          document,
+          "script",
+          "https://connect.facebook.net/en_US/fbevents.js"
+        );
+        fbq("init", "3912294915721860");
+        fbq("track", "PageView");
+      </script><noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=3912294915721860&ev=PageView&noscript=1"
+    /></noscript>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do you have a debt of $15k or more?</title>
+    <!-- Font Awesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Univa+Nova:wght@700&display=swap" rel="stylesheet">
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(249, 250, 251);
+        }
+
+        .header {
+            background-color: #0078D7; /* Blue background */
+            color: white; /* White text */
+            padding: 5px 0; /* Padding around text */
+            text-align: center; /* Center-align text */
+            font-size: 32px; /* Adjusted Font size */
+            position: fixed;
+            top: 0; /* Ensure it is fixed at the top */
+            width: 100%; /* Full width */
+            z-index: 1000; /* Ensure it is above other elements */
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+
+        }
+        .header i {
+            font-size: 30px; /* Adjust arrow size */
+        }
+        .content{
+            text-align: center;
+            background-color: rgb(249, 250, 251);
+            max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;        
+
+}
+        .check-image {
+            text-align: center;
+            margin-top: 60px;
+
+        }
+        .check-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        .question {
+            font-size: 2.2rem; 
+            font-weight: bold;            
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+        }
+        .container{
+            box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+            padding-bottom: 100px;
+            margin-bottom: 3px;
+        }
+
+        /* Styling buttons */
+        .buttons {
+        }
+
+        .buttons a {
+            background-color: #006ac9;
+            color: white;
+            font-weight: bold;
+            padding: 15px 60px;
+            text-decoration: none;
+            font-size: 26px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            display: block;
+            width: 87%;
+            height: 100%;
+        }
+
+        .buttons a:hover {
+            background-color: #005bb5;
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            background-color: rgb(240, 240, 240);
+            padding: 80px 110px 10px 110px;
+        }
+        footer a {
+            color: #0078D7;
+            text-decoration: none;
+            margin: 0 7px;
+            font-size: 12px;
+            
+        }
+        footer p{
+            line-height: 1.5;
+            font-size: 15.5px;
+
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        /* Responsive adjustments */
+@media (max-width: 600px) {
+    .header {
+        font-size: 1.5rem; /* Smaller font size on mobile */
+    }
+
+    .question {
+        font-size: 1.5rem; /* Smaller question font size */
+        text-align: center;
+
+    }
+    .check-image img {
+            max-width: 90%;
+            height: auto;
+        }
+
+    .buttons a {
+        font-size: 1.2rem; /* Smaller button font size */
+        padding: 20px 0; /* Adjusted padding */
+        width: 100%;
+    }
+
+    footer p {
+        font-size: 12px; /* Smaller footer text */
+    }
+    footer{
+        padding: 80px 40px 10px 40px;
+
+    }
+    footer .cr{
+        font-size: 15px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fas fa-arrow-down"></i>Check your eligibility
+    </div>
+    <div class="container">
+        <div class="check-image">
+            <img src="images/check.png" alt="Check Image">
+        </div>
+        <div class="content">
+        <div class="question" >
+            Do you have a credit card debt of $10k or more?
+        </div>
+    
+        <!-- Buttons -->
+        <div class="buttons">
+            
+            <a href="#" onclick="fbq('track', 'InitiateCheckout');">YEAH</a><br>    
+            <a href="#" onclick="fbq('track', 'InitiateCheckout');">NO</a>
+        </div>
+    </div>
+</div>
+    <footer>
+        <a href="#">Privacy Policy</a> | 
+        <a href="#">Terms of Service</a> | 
+        <a href="#">Home</a>
+        <p class="cr">Copyright © 2024 All Rights Reserved</p>
+        <p>The information above has been fact-checked and updated for accuracy.</p>
+        <p>Trademarks used on our website belong to their respective owners and no implied or expressed endorsement of our website or services is intended. Through in-depth research and experienced editors we provide feedback about products and services. We are independently owned, and opinions expressed here are our own.</p>
+<p>
+    THIS IS AN ADVERTORIAL AND NOT AN ACTUAL NEWS ARTICLE, BLOG, OR CONSUMER PROTECTION UPDATE. Our disclaimer is that this site does receive compensation for product reviews and referrals or purchases made through our links. The story depicted here is for demonstration purposes only and everyone's results may vary. We hope you find our online resource informative and helpful. This website and the company that owns it is not responsible for any typographical or photographic errors. If you do not agree to our terms and policies, then please leave this site immediately. All trademarks, logos, and service marks (collectively the "Trademarks") displayed are registered and/or unregistered Trademarks of their respective owners.</p>
+    </footer>
+
+</body>
+</html>
