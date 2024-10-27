@@ -1,50 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script>
         !(function (f, b, e, v, n, t, s) {
-          if (f.fbq) return;
-          n = f.fbq = function () {
-            n.callMethod
-              ? n.callMethod.apply(n, arguments)
-              : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n;
-          n.push = n;
-          n.loaded = !0;
-          n.version = "2.0";
-          n.queue = [];
-          t = b.createElement(e);
-          t.async = !0;
-          t.src = v;
-          s = b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t, s);
-        })(
-          window,
-          document,
-          "script",
-          "https://connect.facebook.net/en_US/fbevents.js"
-        );
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod
+                    ? n.callMethod.apply(n, arguments)
+                    : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n.loaded = !0;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+        })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
         fbq("init", "3912294915721860");
         fbq("track", "PageView");
-      </script><noscript
-      ><img
-        height="1"
-        width="1"
-        style="display: none"
-        src="https://www.facebook.com/tr?id=3912294915721860&ev=PageView&noscript=1"
-    /></noscript>
+
+        const questions = [
+            "¿Tienes una deuda de $10k o más en tarjeta de crédito?",
+            "Actualmente estás realizando pagos mensuales a tus tarjetas de crédito?"
+        ];
+
+        const messages = [
+            "Comprobando sus respuestas",
+            "Comprobando si está disponible en su Estado",
+            "Comprobando si hay un experto disponible ahora",
+            "<div class='msg1'>¡Felicitaciones, usted es elegible!</div><div class='msg'>Esta precalificado para el Programa de alivio de deuda de emergencia.</div><br><div class=''>Ultimo paso: Debe <span class='text-red'>llamar ahora</span> para reclamar su lugar</div><div class='heading'>Toque para llamar ahora</div><button class='phone-button' onclick='callNow()'><i class='fas fa-phone phone-icon'></i>(888) 798-0175</button><div class='msg'>Su lugar está reservado durante <span id='timer'>2:00</span></div>"
+        ];
+
+        let currentQuestionIndex = 0;
+        let fadingIn = true;
+
+        function fadeOut(elements, callback) {
+            elements.forEach(element => {
+                element.style.opacity = 0;
+            });
+            setTimeout(callback, 500); // Wait for fade-out duration
+        }
+
+        function fadeIn(elements, content) {
+            elements.forEach((element, index) => {
+                if (content && index === 0) {
+                    element.innerHTML = content; // Set question text
+                }
+                element.style.opacity = 0;
+                setTimeout(() => {
+                    element.style.opacity = 1;
+                }, 10); // Trigger reflow
+            });
+        }
+
+        function showNextQuestion() {
+            const questionElement = document.querySelector('.question');
+            const buttons = document.querySelector('.buttons');
+            if (currentQuestionIndex < 1) {
+                fadeOut([questionElement, buttons], () => {
+                    fadeIn([questionElement, buttons], questions[currentQuestionIndex]);
+                });
+                currentQuestionIndex++;
+            } else {
+                questionElement.style.display = 'none'; // Hide questions
+                startMessages(); // Start showing messages
+            }
+        }
+
+        function handleYesClick() {
+            showNextQuestion();
+        }
+
+        function handleNoClick() {
+            showNextQuestion();
+            const messageBox = document.querySelector('.message-box');
+        }
+
+        function continuousFade(element) {
+            if (fadingIn) {
+                element.style.transform = 'scale(1.05)'; // Scale up
+            } else {
+                element.style.transform = 'scale(1.02)'; // Scale down
+            }
+            fadingIn = !fadingIn; // Toggle the fading direction
+
+            setTimeout(() => continuousFade(element), 1000); // Repeat every second
+        }
+
+        function startMessages() {
+            const messageBox = document.querySelector('.message-box');
+            messageBox.style.display = 'block';
+            fadeIn([messageBox], messages[0]);
+            document.querySelector('.buttons').style.display = 'none'; // Hide buttons
+
+            let currentMessageIndex = 1;
+
+            const showNextMessage = () => {
+                if (currentMessageIndex < messages.length) {
+                    setTimeout(() => {
+                        fadeIn([messageBox], messages[currentMessageIndex]);
+                        if (currentMessageIndex === messages.length - 1) {
+                            startTimer(); // Start timer when the last message is shown
+                            continuousFade(document.querySelector('.phone-button')); // Start continuous fade
+                        }
+                        currentMessageIndex++;
+                        showNextMessage();
+                    }, 1000); // Show next message after 2 seconds
+                }
+            };
+
+            showNextMessage();
+        }
+
+        function startTimer() {
+            let timeLeft = 120; // 2 minutes in seconds
+            const timerElement = document.getElementById('timer');
+            const countdown = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(countdown);
+                    timerElement.textContent = '0:00'; // Timer finished
+                }
+            }, 1000);
+        }
+
+        function callNow() {
+            window.open('tel:+18887980175'); // Phone call action
+        }
+
+        window.onload = () => {
+            fadeIn([document.querySelector('.question'), document.querySelector('.buttons')], questions[currentQuestionIndex]); // Show the first question on load
+        };
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display: none"
+            src="https://www.facebook.com/tr?id=3912294915721860&ev=PageView&noscript=1" />
+    </noscript>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>¿Tienes una deuda de $15k o más?</title>
-    <!-- Font Awesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Univa+Nova:wght@700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
         body {
             margin: 0;
             padding: 0;
@@ -53,53 +159,78 @@
         }
 
         .header {
-            background-color: #0078D7; /* Blue background */
-            color: white; /* White text */
-            padding: 5px 0; /* Padding around text */
-            text-align: center; /* Center-align text */
-            font-size: 32px; /* Adjusted Font size */
+            background-color: #0078D7;
+            color: white;
+            padding: 5px 0;
+            text-align: center;
+            font-size: 32px;
             position: fixed;
-            top: 0; /* Ensure it is fixed at the top */
-            width: 100%; /* Full width */
-            z-index: 1000; /* Ensure it is above other elements */
+            top: 0;
+            width: 100%;
+            z-index: 1000;
             box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+        }
 
-        }
-        .header i {
-            font-size: 30px; /* Adjust arrow size */
-        }
-        .content{
+        .content {
             text-align: center;
             background-color: rgb(249, 250, 251);
-            max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;        
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-}
         .check-image {
             text-align: center;
             margin-top: 60px;
-
         }
+
         .check-image img {
             max-width: 100%;
             height: auto;
         }
+
+        .question, .buttons, .message-box {
+            transition: opacity 0.5s ease;
+            opacity: 1; /* Start fully visible */
+        }
+
         .question {
-            font-size: 2.2rem; 
-            font-weight: bold;            
+            font-size: 2.2rem;
+            font-weight: bold;
             margin-bottom: 25px;
             color: #333;
             text-align: center;
         }
-        .container{
+
+        .container {
             box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
             padding-bottom: 100px;
             margin-bottom: 3px;
         }
 
-        /* Styling buttons */
-        .buttons {
+        .message-box {
+            display: none;
+            background-color: white;
+            border: 2px solid transparent;
+            border-top: 5px solid green;
+            padding: 20px 10px;
+            margin-top: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1.5rem;
+            color: #333;
+            padding-bottom: 30px;
+        }
+        .heading {
+            font-size: 2.3rem;
+            font-weight: 300;
+            padding-top: 20px;
+            padding-bottom: 15px;
+        }
+        .msg1 {
+            font-size: 1.7rem;
+        }
+        .msg {
+            margin-top: 15px;
         }
 
         .buttons a {
@@ -116,99 +247,138 @@
             cursor: pointer;
             width: 87%;
             height: 100%;
+            margin: 0px auto;
         }
 
-        .buttons a:hover {
-            background-color: #005bb5;
+        .phone-button {
+            background-color: #0078D7;
+            color: white;
+            font-weight: bold;
+            padding: 15px 30px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
+        
+        @keyframes ring {
+            0% { transform: translate(0); }
+            /* 25% { transform: translate(-2px, 2px); } */
+            50% { transform: translate(2px, -2px); }
+            /* 75% { transform: translate(-2px, 2px); } */
+            100% { transform: translate(0); }
+        }
+
+        .phone-icon {
+            position: relative;
+            color: transparent; /* Make the inner icon transparent */
+            -webkit-text-stroke: 2px white; /* Outline color and thickness */
+            margin-right: 5px;
+            animation: ring 3s infinite; /* Apply the ringing animation */
+        }
+
+        .phone-button:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .text-red {
+            color: red;
+        }
+
         footer {
             text-align: center;
             color: #888;
             background-color: rgb(240, 240, 240);
-            padding: 80px 110px 10px 110px;
+            padding: 60px 110px 10px 110px;
         }
+
         footer a {
             color: #0078D7;
             text-decoration: none;
             margin: 0 7px;
             font-size: 12px;
-            
         }
-        footer p{
+
+        footer p {
             line-height: 1.5;
             font-size: 15.5px;
-
         }
+
         footer a:hover {
             text-decoration: underline;
         }
-        /* Responsive adjustments */
-@media (max-width: 600px) {
-    .header {
-        font-size: 1.5rem; /* Smaller font size on mobile */
-    }
 
-    .question {
-        font-size: 1.5rem; /* Smaller question font size */
-        text-align: center;
+        @media (max-width: 600px) {
+            .header {
+                font-size: 1.5rem;
+            }
 
-    }
-    .check-image img {
-            max-width: 90%;
-            height: auto;
+            .question {
+                font-size: 1.5rem;
+            }
+
+            .buttons a {
+                font-size: 1.2rem;
+                padding: 20px 0;
+                width: 100%;
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+
+            footer {
+                padding: 80px 40px 10px 40px;
+            }
         }
-
-    .buttons a {
-        font-size: 1.2rem; /* Smaller button font size */
-        padding: 20px 0; /* Adjusted padding */
-        width: 100%;
-    }
-
-    footer p {
-        font-size: 12px; /* Smaller footer text */
-    }
-    footer{
-        padding: 80px 40px 10px 40px;
-
-    }
-    footer .cr{
-        font-size: 15px;
-    }
-}
     </style>
 </head>
+
 <body>
 
     <div class="header">
-        <i class="fas fa-arrow-down"></i>Verifique su eligibilidad
+        <i class="fas fa-arrow-down"></i> Verifique su eligibilidad
     </div>
+
     <div class="container">
         <div class="check-image">
             <img src="images/check.png" alt="Check Image">
         </div>
+
         <div class="content">
-        <div class="question" >
-            ¿Tienes una deuda de $10k o más en tarjeta de crédito?
-        </div>
-    
-        <!-- Buttons -->
-        <div class="buttons">
-            
-            <a>SI</a><br>    
-            <a>NO</a>
+            <div class="question"></div>
+            <div class="buttons">
+                <a href="javascript:void(0);" onclick="handleYesClick()">SI</a><br>
+                <a href="javascript:void(0);" onclick="handleNoClick()">NO</a>
+            </div>
+
+            <div class="message-box"></div>
+
         </div>
     </div>
-</div>
+
     <footer>
-        <a href="#">Privacy Policy</a> | 
-        <a href="#">Terms of Service</a> | 
+        <a href="#">Privacy Policy</a> |
+        <a href="#">Terms of Service</a> |
         <a href="#">Home</a>
         <p class="cr">Copyright © 2024 All Rights Reserved</p>
         <p>The information above has been fact-checked and updated for accuracy.</p>
-        <p>Trademarks used on our website belong to their respective owners and no implied or expressed endorsement of our website or services is intended. Through in-depth research and experienced editors we provide feedback about products and services. We are independently owned, and opinions expressed here are our own.</p>
-<p>
-    THIS IS AN ADVERTORIAL AND NOT AN ACTUAL NEWS ARTICLE, BLOG, OR CONSUMER PROTECTION UPDATE. Our disclaimer is that this site does receive compensation for product reviews and referrals or purchases made through our links. The story depicted here is for demonstration purposes only and everyone's results may vary. We hope you find our online resource informative and helpful. This website and the company that owns it is not responsible for any typographical or photographic errors. If you do not agree to our terms and policies, then please leave this site immediately. All trademarks, logos, and service marks (collectively the "Trademarks") displayed are registered and/or unregistered Trademarks of their respective owners.</p>
+        <p>Trademarks used on our website belong to their respective owners and no implied or expressed endorsement of
+            our website or services is intended. Through in-depth research and experienced editors we provide feedback
+            about products and services. We are independently owned, and opinions expressed here are our own.</p>
+        <p>
+            THIS IS AN ADVERTORIAL AND NOT AN ACTUAL NEWS ARTICLE, BLOG, OR CONSUMER PROTECTION UPDATE. Our disclaimer
+            is that this site does receive compensation for product reviews and referrals or purchases made through our
+            links. The story depicted here is for demonstration purposes only and everyone's results may vary. We hope
+            you find our online resource informative and helpful. This website and the company that owns it is not
+            responsible for any typographical or photographic errors. If you do not agree to our terms and policies,
+            then please leave this site immediately. All trademarks, logos, and service marks (collectively the
+            "Trademarks") displayed are registered and/or unregistered Trademarks of their respective owners.</p>
     </footer>
 
 </body>
+
 </html>
